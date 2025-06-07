@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: app_orders
+      TZ: UTC
+
+    volumes:
+      - ./docker:/docker-entrypoint-initdb.d
