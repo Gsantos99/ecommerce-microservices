@@ -6,6 +6,7 @@ import {
   validatorCompiler,
   type ZodTypeProvider
 } from "fastify-type-provider-zod";
+import { channels } from "../channels/index.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -21,13 +22,17 @@ app.post(
   {
     schema: {
       body: z.object({
-        amout: z.number()
+        amount: z.coerce.number()
       })
     }
   },
-  (request, reply) => {
-    const { amout } = request.body;
-    console.log("Order received:", amout);
+  async (request, reply) => {
+    const { amount } = request.body;
+    console.log("Order received:", amount);
+    channels.orders.sendToQueue(
+      "orders",
+      Buffer.from(JSON.stringify({ amount }))
+    );
     return reply.status(201).send();
   }
 );
