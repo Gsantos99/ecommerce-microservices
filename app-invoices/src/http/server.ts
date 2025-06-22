@@ -1,8 +1,7 @@
 import "../broker/subscriber.ts";
-
+import "@opentelemetry/auto-instrumentations-node/register";
 import { fastify } from "fastify";
 import { fastifyCors } from "@fastify/cors";
-import { z } from "zod";
 import {
   serializerCompiler,
   validatorCompiler,
